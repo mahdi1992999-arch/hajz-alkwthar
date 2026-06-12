@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مطبعة الكوثر — حجز الكتب المدرسية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #0f2744;
+    --blue:   #1a4172;
+    --gold:   #c9a84c;
+    --gold-lt:#e8c96a;
+    --cream:  #fdf8ef;
+    --white:  #ffffff;
+    --gray50: #f8fafc;
+    --gray100:#f1f5f9;
+    --gray200:#e2e8f0;
+    --gray400:#94a3b8;
+    --gray600:#475569;
+    --gray800:#1e293b;
+    --green:  #16a34a;
+    --green-lt:#dcfce7;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+    --shadow:    0 4px 16px rgba(0,0,0,.10);
+    --shadow-lg: 0 10px 40px rgba(0,0,0,.14);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--cream);
+    color: var(--gray800);
+    min-height: 100vh;
+    direction: rtl;
+  }
+
+  /* ── Header ── */
+  header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    padding: 28px 20px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .logo-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 6px;
+  }
+  .logo-icon {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-lt) 100%);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 4px 16px rgba(201,168,76,.4);
+  }
+  .logo-text h1 {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  .logo-text span {
+    font-size: .78rem;
+    color: var(--gold-lt);
+    font-weight: 500;
+    letter-spacing: .03em;
+  }
+  .badge-free {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(201,168,76,.18);
+    border: 1px solid rgba(201,168,76,.35);
+    color: var(--gold-lt);
+    font-size: .75rem;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 999px;
+    margin-top: 10px;
+  }
+
+  /* ── Stepper ── */
+  .stepper-wrap {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray200);
+    padding: 16px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+  }
+  .stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+    position: relative;
+  }
+  .step-num {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: .85rem;
+    border: 2.5px solid var(--gray200);
+    background: var(--white);
+    color: var(--gray400);
+    transition: all .3s;
+    position: relative;
+    z-index: 2;
+  }
+  .step-label {
+    font-size: .68rem;
+    font-weight: 600;
+    color: var(--gray400);
+    transition: color .3s;
+    white-space: nowrap;
+  }
+  .step.active .step-num {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--navy);
+    box-shadow: 0 0 0 4px rgba(201,168,76,.2);
+  }
+  .step.active .step-label { color: var(--navy); }
+  .step.done .step-num {
+    background: var(--green);
+    border-color: var(--green);
+    color: var(--white);
+  }
+  .step.done .step-label { color: var(--green); }
+  .step-line {
+    flex: 1;
+    height: 2.5px;
+    background: var(--gray200);
+    margin-bottom: 20px;
+    transition: background .3s;
+    position: relative;
+    z-index: 1;
+  }
+  .step-line.done { background: var(--green); }
+  .step-line.active { background: var(--gold); }
+
+  /* ── Main ── */
+  main {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 24px 16px 100px;
+  }
+
+  /* ── Section title ── */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .section-title .icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .section-title h2 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--navy);
+  }
+  .section-title p {
+    font-size: .75rem;
+    color: var(--gray600);
+    font-weight: 500;
+  }
+
+  /* ── Stage block ── */
+  .stage-block {
+    margin-bottom: 20px;
+  }
+  .stage-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--navy);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    color: var(--white);
+  }
+  .stage-header span:first-child {
+    font-weight: 700;
+    font-size: .9rem;
+  }
+  .stage-price {
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 700;
+    font-size: .78rem;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .grade-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray200);
+    border-top: none;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+  }
+  .grade-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 13px;
+    border: 2px solid var(--gray200);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .2s;
+    background: var(--white);
+    user-select: none;
+  }
+  .grade-card:hover {
+    border-color: var(--gold);
+    background: #fdf8ef;
+  }
+  .grade-card.selected {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, #fdf4db 0%, #fdf8ef 100%);
+    box-shadow: 0 0 0 3px rgba(201,168,76,.15);
+  }
+  .grade-check {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 2px solid var(--gray200);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all .2s;
+    background: var(--white);
+  }
+  .grade-card.selected .grade-check {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+  .grade-check svg { display: none; }
+  .grade-card.selected .grade-check svg { display: block; }
+  .grade-name {
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--gray800);
+    line-height: 1.3;
+  }
+
+  /* ── Summary bar ── */
+  .summary-bar {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a3a6e 100%);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .summary-bar.hidden { display: none; }
+  .summary-items {
+    flex: 1;
+    font-size: .78rem;
+    color: rgba(255,255,255,.7);
+    line-height: 1.8;
+  }
+  .summary-items strong { color: var(--white); font-weight: 700; }
+  .summary-total {
+    text-align: left;
+    flex-shrink: 0;
+  }
+  .summary-total .amount {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--gold-lt);
+    display: block;
+    line-height: 1.1;
+  }
+  .summary-total .label {
+    font-size: .65rem;
+    color: rgba(255,255,255,.5);
+    font-weight: 500;
+  }
+
+  /* ── Form ── */
+  .form-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray200);
+    margin-bottom: 16px;
+  }
+  .form-group {
+    margin-bottom: 18px;
+  }
+  .form-group:last-child { margin-bottom: 0; }
+  label {
+    display: block;
+    font-size: .82rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 7px;
+  }
+  label .req { color: #e53e3e; margin-right: 2px; }
+  label .opt {
+    font-size: .7rem;
+    font-weight: 500;
+    color: var(--gray400);
+    margin-right: 4px;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--gray200);
+    border-radius: var(--radius-sm);
+    font-family: 'Cairo', sans-serif;
+    font-size: .9rem;
+    color: var(--gray800);
+    background: var(--white);
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    direction: rtl;
+  }
+  input:focus, select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,168,76,.15);
+  }
+  input.error, select.error {
+    border-color: #e53e3e;
+    box-shadow: 0 0 0 3px rgba(229,62,62,.1);
+  }
+  .error-msg {
+    font-size: .72rem;
+    color: #e53e3e;
+    font-weight: 600;
+    margin-top: 5px;
+    display: none;
+  }
+  .error-msg.show { display: block; }
+  .input-icon-wrap {
+    position: relative;
+  }
+  .input-icon-wrap input {
+    padding-right: 42px;
+  }
+  .input-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    pointer-events: none;
+  }
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  /* ── Confirm card ── */
+  .confirm-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray200);
+    margin-bottom: 16px;
+  }
+  .confirm-header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .confirm-header h3 {
+    color: var(--white);
+    font-size: .95rem;
+    font-weight: 700;
+  }
+  .confirm-header span { font-size: 1.1rem; }
+  .confirm-body { padding: 18px 20px; }
+  .confirm-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--gray200);
+    gap: 10px;
+  }
+  .confirm-row:last-child { border-bottom: none; }
+  .confirm-key {
+    font-size: .78rem;
+    color: var(--gray600);
+    font-weight: 600;
+    flex-shrink: 0;
+    min-width: 90px;
+  }
+  .confirm-val {
+    font-size: .82rem;
+    font-weight: 700;
+    color: var(--gray800);
+    text-align: left;
+    flex: 1;
+    line-height: 1.5;
+  }
+  .confirm-val.grades-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: flex-end;
+  }
+  .grade-tag {
+    background: var(--navy);
+    color: var(--white);
+    font-size: .7rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+  .total-row {
+    background: linear-gradient(135deg, #fdf4db 0%, #fdf8ef 100%);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+    border: 2px solid rgba(201,168,76,.3);
+  }
+  .total-row .label { font-size: .85rem; font-weight: 700; color: var(--navy); }
+  .total-row .amount { font-size: 1.4rem; font-weight: 900; color: var(--gold); }
+
+  /* ── Buttons ── */
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 15px 24px;
+    border-radius: var(--radius-sm);
+    font-family: 'Cairo', sans-serif;
+    font-size: .95rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all .2s;
+    width: 100%;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold) 0%, #e0b84a 100%);
+    color: var(--navy);
+    box-shadow: 0 4px 16px rgba(201,168,76,.35);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(201,168,76,.45);
+  }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-whatsapp {
+    background: linear-gradient(135deg, #25d366 0%, #1da851 100%);
+    color: var(--white);
+    font-size: 1rem;
+    padding: 17px 24px;
+    box-shadow: 0 4px 20px rgba(37,211,102,.35);
+  }
+  .btn-whatsapp:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 28px rgba(37,211,102,.45);
+  }
+  .btn-secondary {
+    background: var(--white);
+    color: var(--navy);
+    border: 2px solid var(--gray200);
+  }
+  .btn-secondary:hover { background: var(--gray50); }
+  .btn-row {
+    display: flex;
+    gap: 10px;
+  }
+  .btn-row .btn { flex: 1; }
+
+  /* ── Page visibility ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── Empty state ── */
+  .empty-state {
+    text-align: center;
+    padding: 24px;
+    color: var(--gray400);
+    font-size: .82rem;
+    font-weight: 600;
+  }
+  .empty-state span { font-size: 1.8rem; display: block; margin-bottom: 6px; }
+
+  /* ── Success ── */
+  .success-wrap {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .success-circle {
+    width: 80px; height: 80px;
+    background: var(--green-lt);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.2rem;
+    margin: 0 auto 20px;
+  }
+  .success-wrap h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .success-wrap p {
+    font-size: .85rem;
+    color: var(--gray600);
+    line-height: 1.7;
+    max-width: 300px;
+    margin: 0 auto 24px;
+  }
+
+  /* ── Notice ── */
+  .notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #eff6ff;
+    border-radius: var(--radius-sm);
+    padding: 12px 15px;
+    margin-bottom: 18px;
+    border: 1px solid #bfdbfe;
+  }
+  .notice span:first-child { font-size: 1rem; flex-shrink: 0; }
+  .notice p { font-size: .75rem; color: #1e40af; font-weight: 600; line-height: 1.5; }
+
+  /* ── Divider ── */
+  .divider {
+    height: 1px;
+    background: var(--gray200);
+    margin: 20px 0;
+  }
+
+  @media (max-width: 400px) {
+    .row-2 { grid-template-columns: 1fr; }
+    .grade-grid { grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; }
+    .logo-text h1 { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">📚</div>
+    <div class="logo-text">
+      <h1>مطبعة الكوثر</h1>
+      <span>الكتب المدرسية العراقية</span>
+    </div>
+  </div>
+  <div>
+    <span class="badge-free">🚚 توصيل مجاني لجميع المحافظات</span>
+  </div>
+</header>
+
+<!-- Stepper -->
+<div class="stepper-wrap">
+  <div class="stepper" id="stepper">
+    <div class="step active" data-step="1">
+      <div class="step-num">١</div>
+      <div class="step-label">الصفوف</div>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step" data-step="2">
+      <div class="step-num">٢</div>
+      <div class="step-label">بيانات التوصيل</div>
+    </div>
+    <div class="step-line" id="line2"></div>
+    <div class="step" data-step="3">
+      <div class="step-num">٣</div>
+      <div class="step-label">مراجعة وإرسال</div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- ===== PAGE 1: Grade Selection ===== -->
+  <div class="page active" id="page1">
+
+    <div class="section-title">
+      <div class="icon">📖</div>
+      <div>
+        <h2>اختر الصف أو الصفوف</h2>
+        <p>يمكنك اختيار أكثر من صف</p>
+      </div>
+    </div>
+
+    <!-- Primary -->
+    <div class="stage-block">
+      <div class="stage-header">
+        <span>🏫 المرحلة الابتدائية</span>
+        <span class="stage-price">٢٠,٠٠٠ دينار / بكج</span>
+      </div>
+      <div class="grade-grid">
+        <div class="grade-card" data-grade="الصف الأول الابتدائي" data-price="20000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">الأول الابتدائي</div>
+        </div>
+        <div class="grade-card" data-grade="الصف الثاني الابتدائي" data-price="20000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">الثاني الابتدائي</div>
+        </div>
+        <div class="grade-card" data-grade="الصف الثالث الابتدائي" data-price="20000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">الثالث الابتدائي</div>
+        </div>
+        <div class="grade-card" data-grade="الصف الرابع الابتدائي" data-price="20000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">الرابع الابتدائي</div>
+        </div>
+        <div class="grade-card" data-grade="الصف الخامس الابتدائي" data-price="20000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">الخامس الابتدائي</div>
+        </div>
+        <div class="grade-card" data-grade="الصف السادس الابتدائي" data-price="20000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">السادس الابتدائي</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Middle -->
+    <div class="stage-block">
+      <div class="stage-header">
+        <span>🏛️ المرحلة المتوسطة</span>
+        <span class="stage-price">٢٤,٠٠٠ دينار / بكج</span>
+      </div>
+      <div class="grade-grid">
+        <div class="grade-card" data-grade="الصف الأول المتوسط" data-price="24000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">الأول المتوسط</div>
+        </div>
+        <div class="grade-card" data-grade="الصف الثاني المتوسط" data-price="24000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">الثاني المتوسط</div>
+        </div>
+        <div class="grade-card" data-grade="الصف الثالث المتوسط" data-price="24000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">الثالث المتوسط</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Secondary -->
+    <div class="stage-block">
+      <div class="stage-header">
+        <span>🎓 المرحلة الإعدادية</span>
+        <span class="stage-price">٢٨,٠٠٠ دينار / بكج</span>
+      </div>
+      <div class="grade-grid">
+        <div class="grade-card" data-grade="الرابع الأدبي" data-price="28000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">الرابع الأدبي</div>
+        </div>
+        <div class="grade-card" data-grade="الرابع العلمي" data-price="28000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">الرابع العلمي</div>
+        </div>
+        <div class="grade-card" data-grade="الخامس الأدبي" data-price="28000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">الخامس الأدبي</div>
+        </div>
+        <div class="grade-card" data-grade="الخامس العلمي" data-price="28000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">الخامس العلمي</div>
+        </div>
+        <div class="grade-card" data-grade="السادس الأدبي" data-price="28000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">السادس الأدبي</div>
+        </div>
+        <div class="grade-card" data-grade="السادس العلمي" data-price="28000" onclick="toggleGrade(this)">
+          <div class="grade-check">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1.5" stroke="#0f2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grade-name">السادس العلمي</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary bar -->
+    <div class="summary-bar hidden" id="summaryBar">
+      <div class="summary-items" id="summaryItems"></div>
+      <div class="summary-total">
+        <span class="amount" id="summaryAmount">٠</span>
+        <span class="label">دينار عراقي</span>
+      </div>
+    </div>
+
+    <div id="errGrades" class="error-msg" style="margin-bottom:14px;font-size:.82rem;">⚠️ يرجى اختيار صف واحد على الأقل</div>
+
+    <button class="btn btn-primary" onclick="goToStep2()">
+      التالي — بيانات التوصيل
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform:scaleX(-1)">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </button>
+
+  </div><!-- /page1 -->
+
+
+  <!-- ===== PAGE 2: Delivery Details ===== -->
+  <div class="page" id="page2">
+
+    <div class="section-title">
+      <div class="icon">📍</div>
+      <div>
+        <h2>بيانات التوصيل</h2>
+        <p>أدخل معلومات العنوان والتواصل</p>
+      </div>
+    </div>
+
+    <!-- Order recap -->
+    <div class="summary-bar" id="summaryBar2">
+      <div class="summary-items" id="summaryItems2"></div>
+      <div class="summary-total">
+        <span class="amount" id="summaryAmount2">٠</span>
+        <span class="label">دينار عراقي</span>
+      </div>
+    </div>
+
+    <div class="form-card">
+
+      <div class="form-group">
+        <label>المحافظة <span class="req">*</span></label>
+        <div class="input-icon-wrap">
+          <select id="province">
+            <option value="">— اختر المحافظة —</option>
+            <option>بغداد</option>
+            <option>البصرة</option>
+            <option>نينوى</option>
+            <option>أربيل</option>
+            <option>النجف</option>
+            <option>كربلاء</option>
+            <option>الأنبار</option>
+            <option>ديالى</option>
+            <option>صلاح الدين</option>
+            <option>كركوك</option>
+            <option>واسط</option>
+            <option>بابل</option>
+            <option>القادسية</option>
+            <option>ذي قار</option>
+            <option>المثنى</option>
+            <option>ميسان</option>
+            <option>دهوك</option>
+            <option>السليمانية</option>
+            <option>حلبجة</option>
+          </select>
+          <span class="input-icon">🗺️</span>
+        </div>
+        <div class="error-msg" id="errProvince">يرجى اختيار المحافظة</div>
+      </div>
+
+      <div class="form-group">
+        <label>القضاء / الناحية <span class="req">*</span></label>
+        <div class="input-icon-wrap">
+          <input type="text" id="district" placeholder="مثال: الكرخ، المثنى، القائم...">
+          <span class="input-icon">🏘️</span>
+        </div>
+        <div class="error-msg" id="errDistrict">يرجى إدخال القضاء أو الناحية</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="row-2">
+        <div class="form-group">
+          <label>رقم الهاتف <span class="req">*</span></label>
+          <div class="input-icon-wrap">
+            <input type="tel" id="phone1" placeholder="07XX XXX XXXX" maxlength="11" dir="ltr">
+            <span class="input-icon">📱</span>
+          </div>
+          <div class="error-msg" id="errPhone1">أدخل رقم هاتف صحيح</div>
+        </div>
+        <div class="form-group">
+          <label>رقم إضافي <span class="opt">(اختياري)</span></label>
+          <div class="input-icon-wrap">
+            <input type="tel" id="phone2" placeholder="07XX XXX XXXX" maxlength="11" dir="ltr">
+            <span class="input-icon">📞</span>
+          </div>
+          <div class="error-msg" id="errPhone2">تحقق من الرقم</div>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:0">
+        <label>أقرب نقطة دالّة <span class="opt">(اختياري)</span></label>
+        <div class="input-icon-wrap">
+          <input type="text" id="landmark" placeholder="مثال: قرب جامع الرحمة، شارع الزهراء...">
+          <span class="input-icon">📌</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="notice">
+      <span>ℹ️</span>
+      <p>سيتواصل معك أحد موظفي مطبعة الكوثر لتأكيد الطلب وتحديد موعد التوصيل</p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToStep(1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+        رجوع
+      </button>
+      <button class="btn btn-primary" onclick="goToStep3()">
+        مراجعة الطلب
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform:scaleX(-1)">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
+
+  </div><!-- /page2 -->
+
+
+  <!-- ===== PAGE 3: Review & Send ===== -->
+  <div class="page" id="page3">
+
+    <div class="section-title">
+      <div class="icon">✅</div>
+      <div>
+        <h2>مراجعة الطلب</h2>
+        <p>تحقق من البيانات ثم أرسل</p>
+      </div>
+    </div>
+
+    <!-- Grades summary -->
+    <div class="confirm-card">
+      <div class="confirm-header">
+        <span>📚</span>
+        <h3>الصفوف المطلوبة</h3>
+      </div>
+      <div class="confirm-body">
+        <div class="confirm-row">
+          <div class="confirm-key">الصفوف</div>
+          <div class="confirm-val grades-list" id="cfGrades"></div>
+        </div>
+        <div class="confirm-row">
+          <div class="confirm-key">عدد البكجات</div>
+          <div class="confirm-val" id="cfCount"></div>
+        </div>
+        <div class="total-row">
+          <span class="label">المجموع الكلي</span>
+          <span class="amount" id="cfTotal"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delivery summary -->
+    <div class="confirm-card">
+      <div class="confirm-header">
+        <span>📍</span>
+        <h3>بيانات التوصيل</h3>
+      </div>
+      <div class="confirm-body">
+        <div class="confirm-row">
+          <div class="confirm-key">المحافظة</div>
+          <div class="confirm-val" id="cfProvince"></div>
+        </div>
+        <div class="confirm-row">
+          <div class="confirm-key">القضاء / الناحية</div>
+          <div class="confirm-val" id="cfDistrict"></div>
+        </div>
+        <div class="confirm-row" id="cfLandmarkRow">
+          <div class="confirm-key">نقطة دالّة</div>
+          <div class="confirm-val" id="cfLandmark"></div>
+        </div>
+        <div class="confirm-row">
+          <div class="confirm-key">رقم الهاتف</div>
+          <div class="confirm-val" id="cfPhone1" dir="ltr" style="text-align:right"></div>
+        </div>
+        <div class="confirm-row" id="cfPhone2Row">
+          <div class="confirm-key">رقم إضافي</div>
+          <div class="confirm-val" id="cfPhone2" dir="ltr" style="text-align:right"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notice">
+      <span>🚚</span>
+      <p>التوصيل مجاني لجميع أنحاء العراق. سيتم الدفع عند الاستلام.</p>
+    </div>
+
+    <button class="btn btn-whatsapp" onclick="sendWhatsApp()" style="margin-bottom:12px">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      إرسال الطلب عبر واتساب
+    </button>
+
+    <button class="btn btn-secondary" onclick="goToStep(2)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+      تعديل البيانات
+    </button>
+
+  </div><!-- /page3 -->
+
+</main>
+
+<script>
+  // ── State ──
+  const state = {
+    grades: [], // [{grade, price}]
+    province: '',
+    district: '',
+    phone1: '',
+    phone2: '',
+    landmark: ''
+  };
+
+  // ── Grade toggle ──
+  function toggleGrade(card) {
+    card.classList.toggle('selected');
+    const grade = card.dataset.grade;
+    const price = parseInt(card.dataset.price);
+    const idx = state.grades.findIndex(g => g.grade === grade);
+    if (idx > -1) state.grades.splice(idx, 1);
+    else state.grades.push({ grade, price });
+    updateSummary();
+  }
+
+  function updateSummary() {
+    const total = state.grades.reduce((s, g) => s + g.price, 0);
+    const bar = document.getElementById('summaryBar');
+    const bar2 = document.getElementById('summaryBar2');
+
+    if (state.grades.length === 0) {
+      bar.classList.add('hidden');
+    } else {
+      bar.classList.remove('hidden');
+      const names = state.grades.map(g => g.grade.replace('الصف ', '')).join(' — ');
+      document.getElementById('summaryItems').innerHTML =
+        `<strong>${state.grades.length} بكج</strong><br>${names}`;
+      document.getElementById('summaryAmount').textContent = toArabicNum(total.toLocaleString());
+
+      const names2 = state.grades.map(g => g.grade.replace('الصف ', '')).join(' — ');
+      document.getElementById('summaryItems2').innerHTML =
+        `<strong>${state.grades.length} بكج</strong><br>${names2}`;
+      document.getElementById('summaryAmount2').textContent = toArabicNum(total.toLocaleString());
+    }
+  }
+
+  // ── Navigation ──
+  function goToStep(n) {
+    document.querySelectorAll('.page').forEach((p, i) => {
+      p.classList.toggle('active', i + 1 === n);
+    });
+    updateStepper(n);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateStepper(active) {
+    document.querySelectorAll('.step').forEach((s, i) => {
+      s.classList.remove('active', 'done');
+      if (i + 1 === active) s.classList.add('active');
+      else if (i + 1 < active) s.classList.add('done');
+    });
+    const l1 = document.getElementById('line1');
+    const l2 = document.getElementById('line2');
+    l1.className = 'step-line' + (active > 1 ? (active > 2 ? ' done' : ' active') : '');
+    l2.className = 'step-line' + (active > 2 ? ' done' : (active === 2 ? '' : ''));
+    if (active === 3) {
+      l1.classList.add('done');
+      l2.classList.add('active');
+    }
+  }
+
+  function goToStep2() {
+    if (state.grades.length === 0) {
+      document.getElementById('errGrades').classList.add('show');
+      return;
+    }
+    document.getElementById('errGrades').classList.remove('show');
+    goToStep(2);
+  }
+
+  function goToStep3() {
+    let valid = true;
+
+    const province = document.getElementById('province').value.trim();
+    const district = document.getElementById('district').value.trim();
+    const phone1   = document.getElementById('phone1').value.trim();
+    const phone2   = document.getElementById('phone2').value.trim();
+    const landmark = document.getElementById('landmark').value.trim();
+
+    setErr('province', !province, 'errProvince');
+    setErr('district', !district, 'errDistrict');
+
+    const phoneOk = /^07\d{9}$/.test(phone1.replace(/\s/g,''));
+    setErr('phone1', !phoneOk, 'errPhone1');
+
+    if (phone2) {
+      const p2ok = /^07\d{9}$/.test(phone2.replace(/\s/g,''));
+      setErr('phone2', !p2ok, 'errPhone2');
+      if (!p2ok) valid = false;
+    } else {
+      setErr('phone2', false, 'errPhone2');
+    }
+
+    if (!province || !district || !phoneOk) valid = false;
+    if (!valid) return;
+
+    state.province = province;
+    state.district = district;
+    state.phone1   = phone1;
+    state.phone2   = phone2;
+    state.landmark = landmark;
+
+    fillConfirm();
+    goToStep(3);
+  }
+
+  function setErr(fieldId, show, errId) {
+    const el = document.getElementById(fieldId);
+    const er = document.getElementById(errId);
+    if (show) { el.classList.add('error'); er.classList.add('show'); }
+    else       { el.classList.remove('error'); er.classList.remove('show'); }
+  }
+
+  function fillConfirm() {
+    const total = state.grades.reduce((s, g) => s + g.price, 0);
+
+    // Grades
+    const gl = document.getElementById('cfGrades');
+    gl.innerHTML = state.grades.map(g =>
+      `<span class="grade-tag">${g.grade.replace('الصف ','')}</span>`
+    ).join('');
+
+    document.getElementById('cfCount').textContent  = `${state.grades.length} بكج`;
+    document.getElementById('cfTotal').textContent  = toArabicNum(total.toLocaleString()) + ' دينار';
+    document.getElementById('cfProvince').textContent = state.province;
+    document.getElementById('cfDistrict').textContent = state.district;
+    document.getElementById('cfPhone1').textContent   = state.phone1;
+
+    const p2Row = document.getElementById('cfPhone2Row');
+    if (state.phone2) {
+      document.getElementById('cfPhone2').textContent = state.phone2;
+      p2Row.style.display = 'flex';
+    } else {
+      p2Row.style.display = 'none';
+    }
+
+    const lmRow = document.getElementById('cfLandmarkRow');
+    if (state.landmark) {
+      document.getElementById('cfLandmark').textContent = state.landmark;
+      lmRow.style.display = 'flex';
+    } else {
+      lmRow.style.display = 'none';
+    }
+  }
+
+  // ── WhatsApp ──
+  function sendWhatsApp() {
+    const total = state.grades.reduce((s, g) => s + g.price, 0);
+    const gradeNames = state.grades.map(g => g.grade).join(' , ');
+
+    const gradeLines = state.grades.map(g => `${g.grade} - ${g.price.toLocaleString()} دينار`).join('\n');
+
+    let msg = `طلب جديد - مطبعة الكوثر\n\n`;
+    msg += `${gradeLines}\n`;
+    msg += `المجموع الكلي: ${total.toLocaleString()} دينار\n\n`;
+    msg += `المحافظة: ${state.province}\n`;
+    msg += `القضاء / الناحية: ${state.district}\n`;
+    msg += `رقم الهاتف: ${state.phone1}`;
+    if (state.phone2) msg += `\nرقم إضافي: ${state.phone2}`;
+
+    const phone = '9647708170195';
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  }
+
+  // ── Arabic numerals ──
+  function toArabicNum(str) {
+    const map = {'0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩',',':'،'};
+    return str.replace(/[0-9,]/g, c => map[c] || c);
+  }
+</script>
+</body>
+</html>

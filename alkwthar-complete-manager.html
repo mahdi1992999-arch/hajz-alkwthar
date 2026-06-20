@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>الكوثر Ads</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+:root{
+  --bg:#080d18;--sur:#101624;--card:#151e30;--bdr:#1e2a40;
+  --gold:#f0a500;--blue:#3b82f6;--green:#22c55e;--red:#ef4444;
+  --purple:#a855f7;--cyan:#06b6d4;--text:#e2e8f0;--muted:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:75px}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#0a1628,#0f2040);border-bottom:1px solid var(--bdr);padding:12px 16px 10px;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.5)}
+.hdr-r{display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:17px;font-weight:900;color:var(--gold);letter-spacing:-.5px}
+.logo em{color:#fff;font-style:normal}
+.dot{width:7px;height:7px;background:var(--green);border-radius:50%;display:inline-block;margin-left:4px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 #22c55e66}50%{opacity:.5;box-shadow:0 0 0 4px #22c55e00}}
+.conn-status{font-size:10px;padding:2px 8px;border-radius:8px;font-weight:700;margin-top:4px;display:inline-block;transition:all .3s}
+.cs-ok{background:#22c55e22;color:var(--green);border:1px solid #22c55e44}
+.cs-err{background:#ef444422;color:var(--red);border:1px solid #ef444433}
+.cs-wait{background:#f0a50022;color:var(--gold);border:1px solid #f0a50033}
+
+/* NAV */
+.nav{display:flex;background:var(--sur);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nb{flex:none;padding:10px 14px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all .2s}
+.nb.on{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* MAIN */
+.main{padding:12px;max-width:480px;margin:0 auto}
+.sec{display:none}.sec.on{display:block}
+.card{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:14px;margin-bottom:11px}
+.ct{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+
+/* SUMMARY */
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:11px}
+.sm{background:var(--sur);border:1px solid var(--bdr);border-radius:10px;padding:10px;text-align:center}
+.sv{font-size:19px;font-weight:900;line-height:1}
+.sl{font-size:9px;color:var(--muted);margin-top:3px}
+
+/* FILTERS */
+.fr{display:flex;gap:5px;margin-bottom:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.fr::-webkit-scrollbar{display:none}
+.fb{flex:none;padding:5px 11px;border-radius:20px;font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;border:1px solid var(--bdr);background:var(--sur);color:var(--muted);cursor:pointer;transition:all .15s}
+.fb.on{background:var(--gold);color:#000;border-color:var(--gold)}
+.sor{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.ss{background:var(--sur);border:1px solid var(--bdr);color:var(--text);font-family:'Cairo',sans-serif;font-size:11px;padding:5px 8px;border-radius:7px;outline:none}
+
+/* CAMPAIGN CARD */
+.cc{background:var(--sur);border:1px solid var(--bdr);border-radius:11px;padding:12px;margin-bottom:8px;transition:border-color .3s}
+.cc.ac{border-color:#22c55e33;background:linear-gradient(135deg,#101f14,var(--sur))}
+.cc.paused-c{opacity:.8}
+.ch{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;gap:8px}
+.cn{font-size:13px;font-weight:700;flex:1;line-height:1.4;color:var(--text)}
+.bdg{padding:3px 8px;border-radius:8px;font-size:10px;font-weight:700;flex-shrink:0}
+.bon{background:#22c55e18;color:var(--green);border:1px solid #22c55e33}
+.boff{background:#64748b18;color:var(--muted);border:1px solid #64748b33}
+.cs2{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:9px}
+.cst{text-align:center;background:var(--bg);border-radius:7px;padding:7px 4px}
+.csv{font-size:14px;font-weight:800}
+.csl{font-size:9px;color:var(--muted);margin-top:2px}
+.g{color:var(--green)}.w{color:var(--gold)}.r{color:var(--red)}.b{color:var(--blue)}
+
+/* ACTION BUTTONS */
+.ca{display:flex;gap:5px}
+.ab{flex:1;padding:9px 3px;border:none;border-radius:8px;font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center;letter-spacing:-.2px}
+.ab:active{transform:scale(.95)}
+.ab:disabled{opacity:.35;cursor:not-allowed}
+.a-pause{background:#ef444418;color:var(--red);border:1px solid #ef444430}
+.a-play{background:#22c55e18;color:var(--green);border:1px solid #22c55e30}
+.a-bud{background:#f0a50018;color:var(--gold);border:1px solid #f0a50030}
+.a-ai{background:#06b6d418;color:var(--cyan);border:1px solid #06b6d430}
+
+/* BUDGET ROW */
+.bud-row{display:none;flex-wrap:wrap;gap:5px;align-items:center;padding-top:9px;margin-top:8px;border-top:1px solid var(--bdr)}
+.bud-row.show{display:flex}
+.bud-inp{flex:1;min-width:70px;padding:9px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:8px;color:var(--text);font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;text-align:center;outline:none}
+.bud-inp:focus{border-color:var(--gold)}
+.pre{padding:7px 9px;background:var(--bg);border:1px solid var(--bdr);border-radius:7px;color:var(--muted);font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s}
+.pre:hover,.pre:active{border-color:var(--gold);color:var(--gold)}
+.bud-ok{padding:9px 14px;background:var(--gold);border:none;border-radius:8px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:800;color:#000;cursor:pointer}
+.bud-cancel{padding:9px 10px;background:var(--bg);border:1px solid var(--bdr);border-radius:8px;font-family:'Cairo',sans-serif;font-size:12px;color:var(--muted);cursor:pointer}
+
+/* AI RESULT */
+.air{background:linear-gradient(135deg,#0d1b35,#0a1525);border:1px solid #3b82f622;border-radius:9px;padding:11px;font-size:12px;line-height:1.7;color:#a8c4e8;margin-top:8px;white-space:pre-wrap;display:none;animation:fi .3s ease}
+.air.show{display:block}
+
+/* PERFORMANCE BADGE */
+.perf{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;margin-bottom:8px}
+.perf-great{background:#22c55e18;color:var(--green);border:1px solid #22c55e30}
+.perf-ok{background:#f0a50018;color:var(--gold);border:1px solid #f0a50030}
+.perf-bad{background:#ef444418;color:var(--red);border:1px solid #ef444430}
+
+/* TARGETING */
+.t-hero{background:linear-gradient(135deg,#120a2a,#0a1228);border:1px solid #a855f722;border-radius:12px;padding:15px;margin-bottom:11px;text-align:center}
+.t-hero h2{font-size:15px;font-weight:900;color:var(--purple);margin-bottom:5px}
+.t-hero p{font-size:11px;color:var(--muted);line-height:1.5}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:11px}
+.ac2{background:var(--sur);border:1px solid var(--bdr);border-radius:10px;padding:10px;cursor:pointer;transition:all .2s;position:relative}
+.ac2.sel{border-color:var(--purple);background:linear-gradient(135deg,#1a0a30,#100a20)}
+.ac2 h4{font-size:11px;font-weight:800;margin-bottom:3px}
+.ac2 p{font-size:10px;color:var(--muted);line-height:1.3}
+.ck{position:absolute;top:6px;left:6px;width:15px;height:15px;background:var(--purple);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:9px;color:white}
+.ac2.sel .ck{display:flex}
+.tl{font-size:10px;font-weight:800;padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:6px}
+.tl1{background:#ef444420;color:#f87171}
+.tl2{background:#f0a50020;color:#fbbf24}
+.tl3{background:#22c55e20;color:#4ade80}
+.iw{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.ic{padding:5px 10px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid;user-select:none;transition:all .15s}
+.ic:active{transform:scale(.93)}
+.it1{background:#ef444410;color:#f87171;border-color:#ef444430}
+.it2{background:#f0a50010;color:#fbbf24;border-color:#f0a50030}
+.it3{background:#22c55e10;color:#4ade80;border-color:#22c55e30}
+.ic.off{opacity:.35;text-decoration:line-through}
+.gg{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:10px}
+.gov{padding:7px;background:var(--sur);border:1px solid var(--bdr);border-radius:7px;font-size:11px;font-weight:700;text-align:center;cursor:pointer;transition:all .15s}
+.gov.sg2{background:#3b82f618;border-color:#3b82f640;color:var(--blue)}
+.gov:active{transform:scale(.93)}
+.ar{display:flex;gap:7px;align-items:center;margin-bottom:11px}
+.al{font-size:11px;color:var(--muted);flex-shrink:0}
+.ai3{flex:1;padding:9px;background:var(--sur);border:1.5px solid var(--bdr);border-radius:8px;color:var(--text);font-family:'Cairo',sans-serif;font-size:13px;text-align:center;outline:none}
+.ai3:focus{border-color:var(--blue)}
+.sc-bar{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.sc-v{font-size:28px;font-weight:900;color:var(--purple);min-width:45px}
+.sc-m{flex:1;height:8px;background:var(--bdr);border-radius:4px;overflow:hidden}
+.sc-f{height:100%;background:linear-gradient(90deg,var(--red),var(--gold),var(--green));border-radius:4px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.gen{width:100%;padding:14px;background:linear-gradient(135deg,#7c3aed,#2563eb);border:none;border-radius:10px;font-family:'Cairo',sans-serif;font-size:14px;font-weight:800;color:white;cursor:pointer;margin-bottom:11px;transition:all .2s}
+.gen:hover{opacity:.9}
+.gen:disabled{opacity:.4;cursor:not-allowed}
+.guide-box{background:linear-gradient(135deg,#0d1b35,#0a1525);border:1px solid #3b82f622;border-radius:10px;padding:13px;font-size:12px;line-height:1.8;white-space:pre-wrap;color:#a8c4e8;margin-top:10px}
+.copy-btn{width:100%;margin-top:8px;padding:10px;background:var(--sur);border:1px solid var(--bdr);border-radius:8px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;color:var(--gold);cursor:pointer;transition:all .2s}
+.copy-btn:hover{border-color:var(--gold)}
+
+/* CHAT */
+.chat-box{background:var(--sur);border:1px solid var(--bdr);border-radius:12px;height:310px;overflow-y:auto;padding:12px;margin-bottom:10px;scroll-behavior:smooth}
+.msg{display:flex;gap:7px;margin-bottom:10px;animation:fi .3s ease}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+.msg.u{flex-direction:row-reverse}
+.mav{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.msg.ai .mav{background:#3b82f620}.msg.u .mav{background:#f0a50020}
+.mbub{max-width:83%;padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.6}
+.msg.ai .mbub{background:#1a2d4a;color:#a8c4e8;border-bottom-right-radius:4px}
+.msg.u .mbub{background:#1a3050;color:var(--text);border-bottom-left-radius:4px}
+.tdd{display:flex;gap:4px;align-items:center;padding:4px 0}
+.tdd span{width:6px;height:6px;background:var(--blue);border-radius:50%;animation:bo 1.1s infinite}
+.tdd span:nth-child(2){animation-delay:.2s}.tdd span:nth-child(3){animation-delay:.4s}
+@keyframes bo{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.qps{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.qp{padding:6px 11px;background:var(--sur);border:1px solid var(--bdr);border-radius:20px;font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;color:var(--gold);cursor:pointer;transition:all .15s}
+.qp:hover{border-color:var(--gold)}
+.cr{display:flex;gap:7px}
+.ci{flex:1;padding:11px 13px;background:var(--sur);border:1.5px solid var(--bdr);border-radius:10px;color:var(--text);font-family:'Cairo',sans-serif;font-size:13px;outline:none;resize:none;direction:rtl}
+.ci:focus{border-color:var(--blue)}
+.sb{width:44px;height:44px;background:var(--blue);border:none;border-radius:10px;color:white;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.sb:hover{background:#2563eb}
+.sb:disabled{background:#3b82f640;cursor:not-allowed}
+
+/* TOAST */
+.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:25px;font-size:13px;font-weight:700;z-index:500;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
+.toast.ok{background:var(--green);color:#000}
+.toast.err{background:var(--red);color:#fff}
+.toast.info{background:var(--blue);color:#fff}
+
+/* LOADING */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:400;align-items:center;justify-content:center;flex-direction:column;gap:14px;backdrop-filter:blur(4px)}
+.ov.show{display:flex}
+.spin{width:44px;height:44px;border:3px solid #ffffff18;border-top-color:var(--gold);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ov-t{color:white;font-size:14px;font-weight:700;text-align:center;max-width:200px;line-height:1.4}
+
+/* REFRESH BTN */
+.rbtn{width:100%;padding:12px;background:var(--sur);border:1px solid var(--bdr);border-radius:10px;color:var(--gold);font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:11px;transition:all .2s}
+.rbtn:hover{border-color:var(--gold);background:var(--card)}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-icon{font-size:40px;margin-bottom:10px}
+.empty-text{font-size:13px;line-height:1.6}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-r">
+    <div class="logo">الكوثر <em>Ads</em> <span class="dot"></span></div>
+    <div style="font-size:10px;color:var(--muted)">Meta · AI · مباشر</div>
+  </div>
+  <span class="conn-status cs-wait" id="connStatus">⏳ جاري الاتصال...</span>
+</div>
+
+<div class="nav">
+  <button class="nb on" onclick="sw('campaigns',this)">📋 حملاتي</button>
+  <button class="nb" onclick="sw('targeting',this)">🎯 الاستهداف</button>
+  <button class="nb" onclick="sw('ai',this)">🤖 المساعد</button>
+</div>
+
+<div class="main">
+
+<!-- ======== CAMPAIGNS ======== -->
+<section class="sec on" id="tab-campaigns">
+  <button class="rbtn" id="fetchBtn" onclick="loadCampaigns()">🔄 جلب حملاتي من Meta</button>
+
+  <div class="sg" id="sg" style="display:none">
+    <div class="sm"><div class="sv g" id="s1">0</div><div class="sl">نشطة</div></div>
+    <div class="sm"><div class="sv w" id="s2">$0</div><div class="sl">إنفاق/أسبوع</div></div>
+    <div class="sm"><div class="sv b" id="s3">0</div><div class="sl">رسائل</div></div>
+  </div>
+
+  <div class="fr">
+    <button class="fb on" onclick="fc('all',this)">الكل</button>
+    <button class="fb" onclick="fc('active',this)">🟢 نشطة</button>
+    <button class="fb" onclick="fc('paused',this)">⏸️ متوقفة</button>
+    <button class="fb" onclick="fc('good',this)">✅ رابحة</button>
+    <button class="fb" onclick="fc('bad',this)">🔴 خاسرة</button>
+  </div>
+
+  <div class="sor">
+    <span style="font-size:11px;color:var(--muted)">ترتيب:</span>
+    <select class="ss" onchange="render()">
+      <option value="cpm">تكلفة/رسالة ↑</option>
+      <option value="msgs">الرسائل ↓</option>
+      <option value="spend">الإنفاق ↓</option>
+    </select>
+  </div>
+
+  <div id="campList">
+    <div class="empty">
+      <div class="empty-icon">📊</div>
+      <div class="empty-text">اضغط "جلب حملاتي من Meta"<br>لعرض حملاتك وإدارتها مباشرة</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== TARGETING ======== -->
+<section class="sec" id="tab-targeting">
+  <div class="t-hero">
+    <h2>🧠 نظام الاستهداف الذكي</h2>
+    <p>خوارزمية مخصصة للوصول لمشتري الكتب المدرسية في كل العراق</p>
+  </div>
+
+  <div class="card">
+    <div class="ct">🔬 خوارزمية الاستهداف</div>
+    <div class="ag">
+      <div class="ac2" onclick="sa(this,'interest')"><div class="ck">✓</div><h4>🎯 الاهتمامات</h4><p>اهتمامات التعليم والكتب</p></div>
+      <div class="ac2" onclick="sa(this,'behavior')"><div class="ck">✓</div><h4>📱 السلوك</h4><p>السلوك الشرائي</p></div>
+      <div class="ac2" onclick="sa(this,'lookalike')"><div class="ck">✓</div><h4>👥 Lookalike</h4><p>مشابه لجمهورك الحالي</p></div>
+      <div class="ac2 sel" onclick="sa(this,'mixed')"><div class="ck">✓</div><h4>⚡ مختلط (الأقوى)</h4><p>يجمع كل الطرق + Advantage+</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">💡 الاهتمامات — اضغط لاستبعاد أي منها</div>
+    <span class="tl tl1">🔴 الأقوى</span>
+    <div class="iw">
+      <span class="ic it1" onclick="tog(this)">Back to School</span>
+      <span class="ic it1" onclick="tog(this)">Textbook</span>
+      <span class="ic it1" onclick="tog(this)">School supplies</span>
+      <span class="ic it1" onclick="tog(this)">كتب مدرسية</span>
+      <span class="ic it1" onclick="tog(this)">School</span>
+    </div>
+    <span class="tl tl2">🟡 مهم</span>
+    <div class="iw">
+      <span class="ic it2" onclick="tog(this)">Education</span>
+      <span class="ic it2" onclick="tog(this)">Parenting</span>
+      <span class="ic it2" onclick="tog(this)">Children's books</span>
+      <span class="ic it2" onclick="tog(this)">Primary education</span>
+      <span class="ic it2" onclick="tog(this)">Child development</span>
+      <span class="ic it2" onclick="tog(this)">تربية الأطفال</span>
+    </div>
+    <span class="tl tl3">🟢 توسيع</span>
+    <div class="iw">
+      <span class="ic it3" onclick="tog(this)">Family</span>
+      <span class="ic it3" onclick="tog(this)">Mother</span>
+      <span class="ic it3" onclick="tog(this)">Academic achievement</span>
+      <span class="ic it3" onclick="tog(this)">Online shopping</span>
+      <span class="ic it3" onclick="tog(this)">Stationery</span>
+      <span class="ic it3" onclick="tog(this)">Student</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">📍 المحافظات العراقية — اضغط لتحديد/إلغاء</div>
+    <div class="gg">
+      <div class="gov sg2" onclick="tgov(this)">بغداد ⭐</div>
+      <div class="gov sg2" onclick="tgov(this)">البصرة ⭐</div>
+      <div class="gov sg2" onclick="tgov(this)">النجف</div>
+      <div class="gov sg2" onclick="tgov(this)">كربلاء</div>
+      <div class="gov sg2" onclick="tgov(this)">الموصل</div>
+      <div class="gov sg2" onclick="tgov(this)">أربيل</div>
+      <div class="gov sg2" onclick="tgov(this)">الناصرية</div>
+      <div class="gov sg2" onclick="tgov(this)">العمارة</div>
+      <div class="gov sg2" onclick="tgov(this)">الحلة</div>
+      <div class="gov sg2" onclick="tgov(this)">الديوانية</div>
+      <div class="gov sg2" onclick="tgov(this)">السليمانية</div>
+      <div class="gov sg2" onclick="tgov(this)">كركوك</div>
+      <div class="gov sg2" onclick="tgov(this)">دهوك</div>
+      <div class="gov sg2" onclick="tgov(this)">السماوة</div>
+      <div class="gov" onclick="tgov(this)">الفلوجة</div>
+      <div class="gov" onclick="tgov(this)">الرمادي</div>
+      <div class="gov" onclick="tgov(this)">تكريت</div>
+      <div class="gov" onclick="tgov(this)">بعقوبة</div>
+    </div>
+    <div style="display:flex;gap:7px">
+      <button onclick="document.querySelectorAll('.gov').forEach(g=>g.classList.add('sg2'));upSc()" style="flex:1;padding:8px;background:var(--sur);border:1px solid var(--bdr);border-radius:8px;color:var(--gold);font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer">تحديد الكل</button>
+      <button onclick="document.querySelectorAll('.gov').forEach(g=>g.classList.remove('sg2'));upSc()" style="flex:1;padding:8px;background:var(--sur);border:1px solid var(--bdr);border-radius:8px;color:var(--muted);font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer">إلغاء الكل</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">👥 الديموغرافيا</div>
+    <div class="ar">
+      <span class="al">من</span>
+      <input type="number" class="ai3" id="amin" value="25" min="18" max="65" oninput="upSc()">
+      <span class="al">إلى</span>
+      <input type="number" class="ai3" id="amax" value="52" min="18" max="65" oninput="upSc()">
+      <span class="al">سنة</span>
+    </div>
+    <div style="display:flex;gap:6px">
+      <button onclick="sg3('all')" id="g-all" style="flex:1;padding:9px;background:#3b82f620;border:1px solid #3b82f640;border-radius:8px;color:var(--blue);font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer">👫 الجميع</button>
+      <button onclick="sg3('women')" id="g-women" style="flex:1;padding:9px;background:var(--sur);border:1px solid var(--bdr);border-radius:8px;color:var(--muted);font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer">👩 نساء</button>
+      <button onclick="sg3('men')" id="g-men" style="flex:1;padding:9px;background:var(--sur);border:1px solid var(--bdr);border-radius:8px;color:var(--muted);font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer">👨 رجال</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">⚡ إعدادات متقدمة</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer"><input type="checkbox" id="adv1" checked onchange="upSc()" style="accent-color:var(--purple);width:16px;height:16px"><span>Advantage+ Audience — توسيع ذكي تلقائي</span></label>
+      <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer"><input type="checkbox" id="adv2" checked onchange="upSc()" style="accent-color:var(--purple);width:16px;height:16px"><span>Detailed Targeting Expansion</span></label>
+      <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer"><input type="checkbox" id="adv3" checked onchange="upSc()" style="accent-color:var(--purple);width:16px;height:16px"><span>موبايل فقط (الجمهور العراقي)</span></label>
+      <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer"><input type="checkbox" id="adv4" checked onchange="upSc()" style="accent-color:var(--purple);width:16px;height:16px"><span>اللغة العربية فقط</span></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">📊 قوة الاستهداف المتوقعة</div>
+    <div class="sc-bar">
+      <div class="sc-v" id="scv">87</div>
+      <div style="flex:1">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:5px" id="scl">قوي جداً ✅</div>
+        <div class="sc-m"><div class="sc-f" id="scf" style="width:87%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <button class="gen" onclick="genGuide()" id="genBtn">🧠 توليد دليل الاستهداف الكامل</button>
+
+  <div id="guideOut" style="display:none">
+    <div class="card">
+      <div class="ct">📋 دليل الإعداد في Meta Ads Manager</div>
+      <div class="guide-box" id="guideText"></div>
+      <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('guideText').textContent).then(()=>showToast('✅ تم نسخ الدليل','ok'))">📋 نسخ الدليل كاملاً</button>
+    </div>
+  </div>
+</section>
+
+<!-- ======== AI ======== -->
+<section class="sec" id="tab-ai">
+  <div class="card">
+    <div class="ct">🤖 مساعد الحملات الذكي</div>
+    <div class="chat-box" id="chatBox">
+      <div class="msg ai">
+        <div class="mav">🤖</div>
+        <div class="mbub">مرحباً محمد! أنا متصل بحملاتك الحقيقية من Meta.<br><br>اسألني عن أي شيء: تحليل حملة، نص إعلان، استهداف، أو خطة موسم الكتب 📚</div>
+      </div>
+    </div>
+    <div class="qps">
+      <button class="qp" onclick="qa('حلل أداء حملاتي الحالية كاملاً')">📊 تحليل</button>
+      <button class="qp" onclick="qa('اكتب نص إعلان قوي للكتب المدرسية العراق')">✍️ نص</button>
+      <button class="qp" onclick="qa('ما أفضل استهداف للكتب المدرسية في العراق؟')">🎯 استهداف</button>
+      <button class="qp" onclick="qa('خطة حملات موسم أغسطس سبتمبر 2026 الكاملة')">📅 موسم</button>
+      <button class="qp" onclick="qa('كيف أخفض تكلفة الرسالة لأقل من $0.30؟')">💡 تحسين</button>
+    </div>
+    <div class="cr">
+      <textarea class="ci" id="ci" placeholder="اكتب سؤالك..." rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sc()}"
+        oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
+      <button class="sb" id="sb" onclick="sc()">➤</button>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="ov" id="ov"><div class="spin"></div><div class="ov-t" id="ovt">جاري...</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ====== CONFIG ======
+const PROXY = 'https://long-hoopoe-60.mahdi1992999-arch.deno.net';
+
+// ====== STATE ======
+let camps=[], curF='all', selAlgo='mixed', selGender='all', chatHist=[];
+
+// ====== INIT ======
+window.addEventListener('load', () => {
+  checkConnection();
+  upSc();
+});
+
+async function checkConnection() {
+  const el = document.getElementById('connStatus');
+  try {
+    const res = await fetch(PROXY + '/health', { signal: AbortSignal.timeout(5000) });
+    if (res.ok) {
+      el.textContent = '🟢 متصل بـ Meta';
+      el.className = 'conn-status cs-ok';
+    } else throw new Error();
+  } catch(e) {
+    el.textContent = '🔴 الخادم غير متاح';
+    el.className = 'conn-status cs-err';
+  }
+}
+
+// ====== NAV ======
+function sw(t,b){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(x=>x.classList.remove('on'));
+  document.getElementById('tab-'+t).classList.add('on');
+  b.classList.add('on');
+}
+
+// ====== UI ======
+function showToast(m,type='ok'){
+  const t=document.getElementById('toast');
+  t.textContent=m; t.className='toast show '+type;
+  setTimeout(()=>t.className='toast',3000);
+}
+function ov(m){
+  document.getElementById('ovt').textContent=m||'جاري...';
+  document.getElementById('ov').classList.add('show');
+}
+function hov(){ document.getElementById('ov').classList.remove('show'); }
+
+// ====== LOAD CAMPAIGNS ======
+async function loadCampaigns() {
+  ov('جاري جلب حملاتك من Meta...');
+  try {
+    const res = await fetch(`${PROXY}/windsor/data?date_preset=last_7d`);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const json = await res.json();
+    const rows = json.data || [];
+
+    if(rows.length === 0) {
+      document.getElementById('campList').innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">لا توجد بيانات حملات في آخر 7 أيام</div></div>';
+      hov(); return;
+    }
+
+    // Aggregate by campaign_id
+    const map = {};
+    for(const r of rows) {
+      const id = r.campaign_id; if(!id) continue;
+      if(!map[id]) map[id] = {
+        id, name: r.campaign || '—',
+        status: (r.campaign_effective_status || 'PAUSED').toUpperCase(),
+        spend: 0, clicks: 0, msgs: 0,
+        budget: parseFloat(r.campaign_daily_budget || 0)
+      };
+      map[id].spend += parseFloat(r.spend || 0);
+      map[id].clicks += parseFloat(r.clicks || 0);
+      map[id].msgs += parseFloat(r.actions_onsite_conversion_messaging_conversation_started_7d || 0);
+    }
+
+    camps = Object.values(map).filter(c => c.spend > 0.01 || c.status === 'ACTIVE');
+    camps.forEach(c => { c.cpm = c.msgs > 0 ? c.spend / c.msgs : 999; });
+
+    // Summary
+    const active = camps.filter(c => c.status === 'ACTIVE').length;
+    const ts = camps.reduce((s,c) => s+c.spend, 0);
+    const tm = camps.reduce((s,c) => s+c.msgs, 0);
+    document.getElementById('s1').textContent = active;
+    document.getElementById('s2').textContent = '$' + ts.toFixed(0);
+    document.getElementById('s3').textContent = tm;
+    document.getElementById('sg').style.display = 'grid';
+
+    render();
+    showToast('✅ تم جلب ' + camps.length + ' حملة', 'ok');
+  } catch(e) {
+    console.error(e);
+    document.getElementById('campList').innerHTML = `<div class="empty"><div class="empty-icon">❌</div><div class="empty-text">خطأ في الاتصال<br><small style="color:var(--red)">${e.message}</small></div></div>`;
+    showToast('❌ تعذر الاتصال بالخادم', 'err');
+  }
+  hov();
+}
+
+// ====== RENDER ======
+function fc(f,b){
+  curF=f;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); render();
+}
+
+function render() {
+  let list = [...camps];
+  if(curF==='active') list=list.filter(c=>c.status==='ACTIVE');
+  else if(curF==='paused') list=list.filter(c=>c.status!=='ACTIVE');
+  else if(curF==='good') list=list.filter(c=>c.cpm<1&&c.msgs>0);
+  else if(curF==='bad') list=list.filter(c=>c.cpm>=2||(c.spend>5&&c.msgs===0));
+
+  const s = document.querySelector('.ss')?.value || 'cpm';
+  if(s==='cpm') list.sort((a,b)=>a.cpm-b.cpm);
+  else if(s==='msgs') list.sort((a,b)=>b.msgs-a.msgs);
+  else list.sort((a,b)=>b.spend-a.spend);
+
+  const el = document.getElementById('campList');
+  if(!list.length) {
+    el.innerHTML='<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">لا توجد حملات في هذا التصنيف</div></div>';
+    return;
+  }
+
+  el.innerHTML = list.map(c => {
+    const on = c.status === 'ACTIVE';
+    const cc = c.cpm < 0.6 ? 'g' : c.cpm < 1.5 ? 'w' : 'r';
+    const cd = c.msgs > 0 ? '$' + c.cpm.toFixed(2) : '—';
+    const nm = c.name.replace(/المنشور:|Post:/g,'').replace(/["""«»]/g,'').trim();
+    const shortNm = nm.substring(0, 38) + (nm.length > 38 ? '...' : '');
+    const eid = 'c' + c.id.replace(/\D/g,'').substring(0,12);
+
+    // Performance badge
+    let perfBadge = '';
+    if(c.msgs > 0) {
+      if(c.cpm < 0.6) perfBadge = `<span class="perf perf-great">⭐ ممتاز</span>`;
+      else if(c.cpm < 1.5) perfBadge = `<span class="perf perf-ok">🟡 مقبول</span>`;
+      else perfBadge = `<span class="perf perf-bad">⚠️ مرتفع</span>`;
+    } else if(c.spend > 5) {
+      perfBadge = `<span class="perf perf-bad">🔴 بدون رسائل</span>`;
+    }
+
+    return `<div class="cc ${on?'ac':'paused-c'}" id="${eid}">
+      ${perfBadge}
+      <div class="ch">
+        <div class="cn">${shortNm}</div>
+        <span class="bdg ${on?'bon':'boff'}">${on?'🟢 نشط':'⏸️ موقف'}</span>
+      </div>
+      <div class="cs2">
+        <div class="cst"><div class="csv w">$${c.spend.toFixed(0)}</div><div class="csl">الإنفاق</div></div>
+        <div class="cst"><div class="csv b">${c.msgs}</div><div class="csl">الرسائل</div></div>
+        <div class="cst"><div class="csv ${cc}">${cd}</div><div class="csl">تكلفة/رسالة</div></div>
+      </div>
+      <div class="ca">
+        ${on
+          ? `<button class="ab a-pause" onclick="doPause('${c.id}','${shortNm.replace(/'/g,"\\'")}','${eid}')">⏸️ إيقاف</button>`
+          : `<button class="ab a-play" onclick="doPlay('${c.id}','${shortNm.replace(/'/g,"\\'")}','${eid}')">▶️ تشغيل</button>`}
+        <button class="ab a-bud" onclick="toggleBud('${eid}')">💰 ميزانية</button>
+        <button class="ab a-ai" onclick="doAI('${eid}','${shortNm.replace(/'/g,"\\'")}',${c.spend.toFixed(1)},${c.msgs},${c.cpm===999?0:c.cpm.toFixed(2)})">🤖 تحليل</button>
+      </div>
+      <div class="bud-row" id="bud-${eid}">
+        <button class="pre" onclick="setPre('${eid}',5)">$5</button>
+        <button class="pre" onclick="setPre('${eid}',10)">$10</button>
+        <button class="pre" onclick="setPre('${eid}',20)">$20</button>
+        <button class="pre" onclick="setPre('${eid}',30)">$30</button>
+        <button class="pre" onclick="setPre('${eid}',50)">$50</button>
+        <input type="number" class="bud-inp" id="inp-${eid}" placeholder="$" min="1" max="500">
+        <button class="bud-ok" onclick="confirmBud('${c.id}','${eid}')">✅</button>
+        <button class="bud-cancel" onclick="toggleBud('${eid}')">✕</button>
+      </div>
+      <div class="air" id="air-${eid}"></div>
+    </div>`;
+  }).join('');
+}
+
+// ====== PAUSE ======
+async function doPause(id, name, eid) {
+  if(!confirm(`⏸️ إيقاف حملة:\n"${name}"\n\nهل أنت متأكد؟`)) return;
+  const btns = document.querySelectorAll(`#${eid} .ab`);
+  btns.forEach(b=>b.disabled=true);
+  ov('جاري إيقاف الحملة...');
+  try {
+    const res = await fetch(`${PROXY}/windsor/pause`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({campaign_id: id})
+    });
+    const d = await res.json();
+    if(d.success) {
+      const c = camps.find(x=>x.id===id);
+      if(c) c.status = 'PAUSED';
+      render();
+      showToast('✅ تم إيقاف الحملة', 'ok');
+    } else {
+      showToast('❌ فشل الإيقاف', 'err');
+      btns.forEach(b=>b.disabled=false);
+    }
+  } catch(e) {
+    showToast('❌ خطأ في الاتصال', 'err');
+    btns.forEach(b=>b.disabled=false);
+  }
+  hov();
+}
+
+// ====== ENABLE ======
+async function doPlay(id, name, eid) {
+  if(!confirm(`▶️ تشغيل حملة:\n"${name}"\n\nهل أنت متأكد؟`)) return;
+  const btns = document.querySelectorAll(`#${eid} .ab`);
+  btns.forEach(b=>b.disabled=true);
+  ov('جاري تشغيل الحملة...');
+  try {
+    const res = await fetch(`${PROXY}/windsor/enable`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({campaign_id: id})
+    });
+    const d = await res.json();
+    if(d.success) {
+      const c = camps.find(x=>x.id===id);
+      if(c) c.status = 'ACTIVE';
+      render();
+      showToast('✅ تم تشغيل الحملة', 'ok');
+    } else {
+      showToast('❌ فشل التشغيل', 'err');
+      btns.forEach(b=>b.disabled=false);
+    }
+  } catch(e) {
+    showToast('❌ خطأ في الاتصال', 'err');
+    btns.forEach(b=>b.disabled=false);
+  }
+  hov();
+}
+
+// ====== BUDGET ======
+function toggleBud(eid) {
+  const row = document.getElementById('bud-'+eid);
+  row.classList.toggle('show');
+  if(row.classList.contains('show')) {
+    document.getElementById('inp-'+eid).focus();
+  }
+}
+function setPre(eid, v) {
+  document.getElementById('inp-'+eid).value = v;
+  document.getElementById('inp-'+eid).focus();
+}
+
+async function confirmBud(id, eid) {
+  const val = parseInt(document.getElementById('inp-'+eid).value);
+  if(!val || val < 1 || val > 500) {
+    showToast('أدخل ميزانية بين $1 و$500', 'err'); return;
+  }
+  if(!confirm(`💰 تعديل الميزانية إلى $${val}/يوم؟`)) return;
+  ov('جاري تعديل الميزانية...');
+  try {
+    const res = await fetch(`${PROXY}/windsor/budget`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({campaign_id: id, budget_type: 'daily', amount: val * 100})
+    });
+    const d = await res.json();
+    if(d.success) {
+      showToast(`✅ الميزانية أصبحت $${val}/يوم`, 'ok');
+      document.getElementById('bud-'+eid).classList.remove('show');
+      // Update local data
+      const c = camps.find(x=>x.id===id);
+      if(c) c.budget = val * 100;
+    } else {
+      showToast('❌ فشل تعديل الميزانية', 'err');
+    }
+  } catch(e) {
+    showToast('❌ خطأ في الاتصال', 'err');
+  }
+  hov();
+}
+
+// ====== AI ANALYSIS ======
+async function doAI(eid, name, spend, msgs, cpm) {
+  const box = document.getElementById('air-'+eid);
+  box.textContent = '🤖 جاري التحليل...';
+  box.classList.add('show');
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 300,
+        system: 'مستشار Meta Ads للعراق. أجب بالعربية بـ 3 جمل فقط: التقييم، السبب، القرار.',
+        messages: [{role:'user',content:`حملة: "${name}"
+الإنفاق: $${spend} | الرسائل: ${msgs} | تكلفة/رسالة: $${cpm}
+متوسط حملاتي: $0.60 للرسالة
+أعطني تقييماً وقراراً فورياً.`}]
+      })
+    });
+    const data = await res.json();
+    box.textContent = data.content?.[0]?.text || 'حدث خطأ';
+  } catch(e) {
+    box.textContent = '❌ خطأ في التحليل';
+  }
+}
+
+// ====== TARGETING ======
+function sa(el, type) {
+  document.querySelectorAll('.ac2').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel'); selAlgo = type; upSc();
+}
+function tog(el) { el.classList.toggle('off'); upSc(); }
+function tgov(el) { el.classList.toggle('sg2'); upSc(); }
+function sg3(g) {
+  selGender = g;
+  ['all','women','men'].forEach(x => {
+    const b = document.getElementById('g-'+x);
+    const on = x === g;
+    b.style.background = on ? '#3b82f620' : 'var(--sur)';
+    b.style.borderColor = on ? '#3b82f640' : 'var(--bdr)';
+    b.style.color = on ? 'var(--blue)' : 'var(--muted)';
+  });
+  upSc();
+}
+function upSc() {
+  const i = [...document.querySelectorAll('.ic:not(.off)')].length;
+  const g = [...document.querySelectorAll('.gov.sg2')].length;
+  const a = document.getElementById('adv1')?.checked;
+  const m = selAlgo === 'mixed';
+  let s = Math.min(40 + Math.min(i*3,25) + Math.min(g*2,20) + (a?10:0) + (m?5:0), 98);
+  document.getElementById('scv').textContent = s;
+  document.getElementById('scf').style.width = s + '%';
+  document.getElementById('scl').textContent = s>=85 ? 'قوي جداً ✅' : s>=70 ? 'جيد 🟡' : 'ضعيف 🔴';
+}
+
+async function genGuide() {
+  const btn = document.getElementById('genBtn');
+  btn.disabled = true; btn.textContent = '⏳ يبني الدليل...';
+  ov('الذكاء الاصطناعي يبني دليل الاستهداف...');
+  const ints = [...document.querySelectorAll('.ic:not(.off)')].map(c=>c.textContent);
+  const govs = [...document.querySelectorAll('.gov.sg2')].map(g=>g.textContent);
+  const algoNames = {interest:'الاهتمامات',behavior:'السلوك الشرائي',lookalike:'Lookalike',mixed:'مختلط (الأقوى)'};
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1500,
+        system: 'أنت خبير Meta Ads للعراق. اكتب دليل إعداد استهداف تفصيلي خطوة بخطوة بالعربية. كن دقيقاً وعملياً.',
+        messages: [{role:'user',content:`اكتب دليل إعداد استهداف كامل في Meta Ads Manager لحملة كتب مدرسية:
+
+📌 مطبعة الكوثر — العراق
+🔬 الخوارزمية: ${algoNames[selAlgo]}
+💡 الاهتمامات: ${ints.join(' | ')}
+📍 المحافظات: ${govs.join('، ')}
+👥 العمر: ${document.getElementById('amin').value}-${document.getElementById('amax').value} سنة
+🚻 الجنس: ${selGender==='all'?'الجميع':selGender==='women'?'نساء فقط':'رجال فقط'}
+⚡ Advantage+: ${document.getElementById('adv1').checked?'مفعّل':'معطّل'}
+📱 موبايل فقط: ${document.getElementById('adv3').checked?'نعم':'لا'}
+🌐 عربية فقط: ${document.getElementById('adv4').checked?'نعم':'لا'}
+🚫 الاستبعادات: Higher education, University students, أعمار +55
+
+اكتب الخطوات بالتفصيل مع نصائح لتخفيض تكلفة الرسالة.`}]
+      })
+    });
+    const data = await res.json();
+    document.getElementById('guideText').textContent = data.content?.[0]?.text || 'حدث خطأ';
+    document.getElementById('guideOut').style.display = 'block';
+    document.getElementById('guideOut').scrollIntoView({behavior:'smooth'});
+  } catch(e) { showToast('خطأ في التوليد', 'err'); }
+  btn.disabled = false; btn.textContent = '🧠 توليد دليل الاستهداف الكامل';
+  hov();
+}
+
+// ====== AI CHAT ======
+const SYS = `أنت مساعد Meta Ads لمطبعة الكوثر العراق.
+الحملات الرابحة: "كتبك بضغطة واحدة" $0.42/رسالة، "التوصيل مجاني" $0.58/رسالة.
+الاستهداف: آباء وأمهات 25-52 سنة، Back to School + Education + Parenting، كل العراق.
+أجب بالعربية مختصراً وعملياً.`;
+
+function addMsg(role, text) {
+  const box = document.getElementById('chatBox');
+  const d = document.createElement('div');
+  d.className = 'msg ' + (role==='user'?'u':'ai');
+  d.innerHTML = `<div class="mav">${role==='user'?'👤':'🤖'}</div><div class="mbub">${text.replace(/\n/g,'<br>')}</div>`;
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+  if(role !== 'typing') chatHist.push({role:role==='user'?'user':'assistant', content:text});
+}
+
+function showTD() {
+  const box = document.getElementById('chatBox');
+  const d = document.createElement('div'); d.className='msg ai'; d.id='td';
+  d.innerHTML = `<div class="mav">🤖</div><div class="mbub"><div class="tdd"><span></span><span></span><span></span></div></div>`;
+  box.appendChild(d); box.scrollTop = box.scrollHeight;
+}
+
+async function sc() {
+  const inp = document.getElementById('ci');
+  const msg = inp.value.trim(); if(!msg) return;
+  inp.value = ''; inp.style.height = 'auto';
+  addMsg('user', msg);
+  document.getElementById('sb').disabled = true;
+  showTD();
+  try {
+    const msgs = [...chatHist.slice(-8)];
+    if(!msgs.length || msgs[msgs.length-1].role !== 'user') msgs.push({role:'user',content:msg});
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,system:SYS,messages:msgs})
+    });
+    const data = await res.json();
+    document.getElementById('td')?.remove();
+    addMsg('ai', data.content?.[0]?.text || 'عذراً، حدث خطأ.');
+  } catch(e) {
+    document.getElementById('td')?.remove();
+    addMsg('ai', '❌ خطأ في الاتصال.');
+  }
+  document.getElementById('sb').disabled = false;
+}
+
+function qa(q) {
+  document.getElementById('ci').value = q; sc();
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-ai').classList.add('on');
+  document.querySelectorAll('.nb')[2].classList.add('on');
+}
+</script>
+</body>
+</html>

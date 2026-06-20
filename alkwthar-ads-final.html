@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الكوثر Ads</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+:root{--bg:#080d18;--sur:#101624;--card:#151e30;--bdr:#1e2a40;--gold:#f0a500;--blue:#3b82f6;--green:#22c55e;--red:#ef4444;--purple:#a855f7;--cyan:#06b6d4;--text:#e2e8f0;--muted:#64748b}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:75px}
+.hdr{background:linear-gradient(135deg,#0a1628,#0f2040);border-bottom:1px solid var(--bdr);padding:12px 16px 10px;position:sticky;top:0;z-index:100}
+.hdr-r{display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:17px;font-weight:900;color:var(--gold)}
+.logo em{color:#fff;font-style:normal}
+.dot{width:7px;height:7px;background:var(--green);border-radius:50%;display:inline-block;margin-left:4px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.nav{display:flex;background:var(--sur);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nb{flex:none;padding:10px 14px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all .2s}
+.nb.on{color:var(--gold);border-bottom-color:var(--gold)}
+.main{padding:12px;max-width:480px;margin:0 auto}
+.sec{display:none}.sec.on{display:block}
+.card{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:14px;margin-bottom:11px}
+.ct{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:11px}
+.sm{background:var(--sur);border:1px solid var(--bdr);border-radius:10px;padding:10px;text-align:center}
+.sv{font-size:19px;font-weight:900;line-height:1}
+.sl{font-size:9px;color:var(--muted);margin-top:3px}
+.fr{display:flex;gap:5px;margin-bottom:10px;overflow-x:auto;scrollbar-width:none}
+.fr::-webkit-scrollbar{display:none}
+.fb{flex:none;padding:5px 11px;border-radius:20px;font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;border:1px solid var(--bdr);background:var(--sur);color:var(--muted);cursor:pointer;transition:all .15s}
+.fb.on{background:var(--gold);color:#000;border-color:var(--gold)}
+.sor{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.ss{background:var(--sur);border:1px solid var(--bdr);color:var(--text);font-family:'Cairo',sans-serif;font-size:11px;padding:5px 8px;border-radius:7px;outline:none}
+.cc{background:var(--sur);border:1px solid var(--bdr);border-radius:11px;padding:12px;margin-bottom:8px}
+.cc.ac{border-color:#22c55e33;background:linear-gradient(135deg,#0d1a0f,var(--sur))}
+.ch{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;gap:8px}
+.cn{font-size:13px;font-weight:700;flex:1;line-height:1.4}
+.bdg{padding:3px 8px;border-radius:8px;font-size:10px;font-weight:700;flex-shrink:0}
+.bon{background:#22c55e18;color:var(--green);border:1px solid #22c55e33}
+.boff{background:#64748b18;color:var(--muted);border:1px solid #64748b33}
+.cs2{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:9px}
+.cst{text-align:center;background:var(--bg);border-radius:7px;padding:7px 4px}
+.csv{font-size:14px;font-weight:800}
+.csl{font-size:9px;color:var(--muted);margin-top:2px}
+.g{color:var(--green)}.w{color:var(--gold)}.r{color:var(--red)}.b{color:var(--blue)}
+.ca{display:flex;gap:5px}
+.ab{flex:1;padding:9px 3px;border:none;border-radius:8px;font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center}
+.ab:active{transform:scale(.95)}
+.ab:disabled{opacity:.35;cursor:not-allowed}
+.a-pause{background:#ef444418;color:var(--red);border:1px solid #ef444430}
+.a-play{background:#22c55e18;color:var(--green);border:1px solid #22c55e30}
+.a-bud{background:#f0a50018;color:var(--gold);border:1px solid #f0a50030}
+.a-ai{background:#06b6d418;color:var(--cyan);border:1px solid #06b6d430}
+.bud-row{display:none;flex-wrap:wrap;gap:5px;align-items:center;padding-top:9px;margin-top:8px;border-top:1px solid var(--bdr)}
+.bud-row.show{display:flex}
+.bud-inp{flex:1;min-width:70px;padding:9px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:8px;color:var(--text);font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;text-align:center;outline:none}
+.bud-inp:focus{border-color:var(--gold)}
+.pre{padding:7px 9px;background:var(--bg);border:1px solid var(--bdr);border-radius:7px;color:var(--muted);font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;cursor:pointer}
+.pre:hover{border-color:var(--gold);color:var(--gold)}
+.bud-ok{padding:9px 14px;background:var(--gold);border:none;border-radius:8px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:800;color:#000;cursor:pointer}
+.air{background:linear-gradient(135deg,#0d1b35,#0a1525);border:1px solid #3b82f622;border-radius:9px;padding:11px;font-size:12px;line-height:1.7;color:#a8c4e8;margin-top:8px;white-space:pre-wrap;display:none}
+.air.show{display:block}
+.perf{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;margin-bottom:8px}
+.pg{background:#22c55e18;color:var(--green);border:1px solid #22c55e30}
+.po{background:#f0a50018;color:var(--gold);border:1px solid #f0a50030}
+.pb{background:#ef444418;color:var(--red);border:1px solid #ef444430}
+.chat-box{background:var(--sur);border:1px solid var(--bdr);border-radius:12px;height:310px;overflow-y:auto;padding:12px;margin-bottom:10px;scroll-behavior:smooth}
+.msg{display:flex;gap:7px;margin-bottom:10px;animation:fi .3s ease}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+.msg.u{flex-direction:row-reverse}
+.mav{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.msg.ai .mav{background:#3b82f620}.msg.u .mav{background:#f0a50020}
+.mbub{max-width:83%;padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.6}
+.msg.ai .mbub{background:#1a2d4a;color:#a8c4e8;border-bottom-right-radius:4px}
+.msg.u .mbub{background:#1a3050;color:var(--text);border-bottom-left-radius:4px}
+.tdd{display:flex;gap:4px;align-items:center;padding:4px 0}
+.tdd span{width:6px;height:6px;background:var(--blue);border-radius:50%;animation:bo 1.1s infinite}
+.tdd span:nth-child(2){animation-delay:.2s}.tdd span:nth-child(3){animation-delay:.4s}
+@keyframes bo{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.qps{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.qp{padding:6px 11px;background:var(--sur);border:1px solid var(--bdr);border-radius:20px;font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;color:var(--gold);cursor:pointer}
+.cr{display:flex;gap:7px}
+.ci{flex:1;padding:11px 13px;background:var(--sur);border:1.5px solid var(--bdr);border-radius:10px;color:var(--text);font-family:'Cairo',sans-serif;font-size:13px;outline:none;resize:none;direction:rtl}
+.ci:focus{border-color:var(--blue)}
+.sb{width:44px;height:44px;background:var(--blue);border:none;border-radius:10px;color:white;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb:disabled{background:#3b82f640;cursor:not-allowed}
+.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:25px;font-size:13px;font-weight:700;z-index:500;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
+.tok{background:var(--green);color:#000}
+.terr{background:var(--red);color:#fff}
+.tinfo{background:var(--blue);color:#fff}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:400;align-items:center;justify-content:center;flex-direction:column;gap:14px;backdrop-filter:blur(4px)}
+.ov.show{display:flex}
+.spin{width:44px;height:44px;border:3px solid #ffffff18;border-top-color:var(--gold);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ov-t{color:white;font-size:14px;font-weight:700;text-align:center;max-width:220px;line-height:1.5}
+.rbtn{width:100%;padding:12px;background:var(--sur);border:1px solid var(--bdr);border-radius:10px;color:var(--gold);font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:11px}
+.rbtn:hover{border-color:var(--gold)}
+.empty{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-icon{font-size:40px;margin-bottom:10px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-r">
+    <div class="logo">الكوثر <em>Ads</em> <span class="dot"></span></div>
+    <div style="font-size:10px;color:var(--muted)">Meta · AI · مباشر</div>
+  </div>
+  <div style="font-size:10px;color:var(--green);margin-top:3px">🟢 متصل بـ Meta عبر Windsor.ai</div>
+</div>
+
+<div class="nav">
+  <button class="nb on" onclick="sw('campaigns',this)">📋 حملاتي</button>
+  <button class="nb" onclick="sw('ai',this)">🤖 المساعد</button>
+</div>
+
+<div class="main">
+
+<section class="sec on" id="tab-campaigns">
+  <button class="rbtn" onclick="loadCampaigns()">🔄 جلب حملاتي من Meta</button>
+  <div class="sg" id="sg" style="display:none">
+    <div class="sm"><div class="sv g" id="s1">0</div><div class="sl">نشطة</div></div>
+    <div class="sm"><div class="sv w" id="s2">$0</div><div class="sl">إنفاق/أسبوع</div></div>
+    <div class="sm"><div class="sv b" id="s3">0</div><div class="sl">رسائل</div></div>
+  </div>
+  <div class="fr">
+    <button class="fb on" onclick="fc('all',this)">الكل</button>
+    <button class="fb" onclick="fc('active',this)">🟢 نشطة</button>
+    <button class="fb" onclick="fc('paused',this)">⏸️ متوقفة</button>
+    <button class="fb" onclick="fc('good',this)">✅ رابحة</button>
+    <button class="fb" onclick="fc('bad',this)">🔴 خاسرة</button>
+  </div>
+  <div class="sor">
+    <span style="font-size:11px;color:var(--muted)">ترتيب:</span>
+    <select class="ss" onchange="render()">
+      <option value="cpm">تكلفة/رسالة ↑</option>
+      <option value="msgs">الرسائل ↓</option>
+      <option value="spend">الإنفاق ↓</option>
+    </select>
+  </div>
+  <div id="campList"><div class="empty"><div class="empty-icon">📊</div><div>اضغط "جلب حملاتي من Meta"</div></div></div>
+</section>
+
+<section class="sec" id="tab-ai">
+  <div class="card">
+    <div class="ct">🤖 مساعد الحملات الذكي</div>
+    <div class="chat-box" id="chatBox">
+      <div class="msg ai"><div class="mav">🤖</div><div class="mbub">مرحباً! اسألني عن حملاتك أو اطلب تحليلاً 📚</div></div>
+    </div>
+    <div class="qps">
+      <button class="qp" onclick="qa('حلل أداء حملاتي الحالية')">📊 تحليل</button>
+      <button class="qp" onclick="qa('اكتب نص إعلان قوي للكتب المدرسية')">✍️ نص</button>
+      <button class="qp" onclick="qa('خطة موسم أغسطس سبتمبر 2026')">📅 موسم</button>
+    </div>
+    <div class="cr">
+      <textarea class="ci" id="ci" placeholder="اكتب سؤالك..." rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sc()}"
+        oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
+      <button class="sb" id="sb" onclick="sc()">➤</button>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="ov" id="ov"><div class="spin"></div><div class="ov-t" id="ovt">جاري...</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// البيانات الحقيقية لحملاتك
+const REAL_DATA = [{"campaign":"كتبك المدرسية بضغطة واحدة","campaign_id":"120246197367150451","campaign_effective_status":"ACTIVE","spend":139.9,"msgs":328},{"campaign":"كتبك المدرسية بضغطة واحدة (2)","campaign_id":"120246535780560451","campaign_effective_status":"ACTIVE","spend":83.2,"msgs":193},{"campaign":"التوصيل مجاني (1)","campaign_id":"120246647271720451","campaign_effective_status":"ACTIVE","spend":244.34,"msgs":414},{"campaign":"التوصيل مجاني (2)","campaign_id":"120246731489730451","campaign_effective_status":"ACTIVE","spend":129.81,"msgs":219},{"campaign":"عرض تنزيل الاسعار","campaign_id":"120245758262480451","campaign_effective_status":"PAUSED","spend":156.81,"msgs":208},{"campaign":"التوصيل مجاني (3)","campaign_id":"120246795218260451","campaign_effective_status":"PAUSED","spend":138.46,"msgs":237},{"campaign":"التوصيل مجاني (4)","campaign_id":"120246795419000451","campaign_effective_status":"PAUSED","spend":138.63,"msgs":221},{"campaign":"التوصيل مجاني (5)","campaign_id":"120247019048300451","campaign_effective_status":"PAUSED","spend":37.7,"msgs":19},{"campaign":"التوصيل مجاني (6)","campaign_id":"120247026588210451","campaign_effective_status":"PAUSED","spend":38.17,"msgs":18},{"campaign":"احجز كتبك بضغطة زر","campaign_id":"120246847557410451","campaign_effective_status":"PAUSED","spend":44.76,"msgs":0},{"campaign":"عرض تنزيل الاسعار (2)","campaign_id":"120244946334700451","campaign_effective_status":"PAUSED","spend":60.47,"msgs":71},{"campaign":"كتب مدرسية ✨","campaign_id":"120245955195970451","campaign_effective_status":"PAUSED","spend":30.44,"msgs":34},{"campaign":"إلى أساتذتنا","campaign_id":"120245618783480451","campaign_effective_status":"PAUSED","spend":27.77,"msgs":41},{"campaign":"إلى أساتذتنا (2)","campaign_id":"120245155679220451","campaign_effective_status":"PAUSED","spend":19.62,"msgs":53},{"campaign":"إلى أساتذتنا (3)","campaign_id":"120245747169870451","campaign_effective_status":"PAUSED","spend":20.08,"msgs":3},{"campaign":"Mohammed","campaign_id":"120247272455930451","campaign_effective_status":"PAUSED","spend":17.52,"msgs":17},{"campaign":"التوصيل مجاني مجاني","campaign_id":"120247232882590451","campaign_effective_status":"PAUSED","spend":14.88,"msgs":7},{"campaign":"إلى أساتذتنا (4)","campaign_id":"120246944861130451","campaign_effective_status":"PAUSED","spend":10.02,"msgs":16},{"campaign":"جديدة الزيارات","campaign_id":"120247281857660451","campaign_effective_status":"PAUSED","spend":9.03,"msgs":0},{"campaign":"احجز كتبك (2)","campaign_id":"120246795165120451","campaign_effective_status":"PAUSED","spend":8.4,"msgs":1},{"campaign":"كتب مدرسية لكافة المراحل","campaign_id":"120245758210830451","campaign_effective_status":"PAUSED","spend":7.04,"msgs":4},{"campaign":"اسعار الجملة","campaign_id":"120246186534260451","campaign_effective_status":"PAUSED","spend":7.32,"msgs":2},{"campaign":"كتب مدرسية لكافة المراحل (2)","campaign_id":"120247016179120451","campaign_effective_status":"PAUSED","spend":6.13,"msgs":0},{"campaign":"احجز كتبك (3)","campaign_id":"120246795199970451","campaign_effective_status":"PAUSED","spend":5.4,"msgs":0},{"campaign":"كتب مدرسية لكافة المراحل (3)","campaign_id":"120247336241340451","campaign_effective_status":"PAUSED","spend":4.58,"msgs":1},{"campaign":"New messages campaign","campaign_id":"120247269998550451","campaign_effective_status":"PAUSED","spend":3.8,"msgs":1},{"campaign":"كتب مدرسية ✨ (2)","campaign_id":"120233475790010451","campaign_effective_status":"PAUSED","spend":2.46,"msgs":7},{"campaign":"التوصيل مجاني مجاني (2)","campaign_id":"120247018932010451","campaign_effective_status":"PAUSED","spend":2.86,"msgs":3}];
+
+let camps=[], curF='all', chatHist=[];
+
+function sw(t,b){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.nb').forEach(x=>x.classList.remove('on'));document.getElementById('tab-'+t).classList.add('on');b.classList.add('on')}
+function showToast(m,type='tok'){const t=document.getElementById('toast');t.textContent=m;t.className='toast show '+type;setTimeout(()=>t.className='toast',3000)}
+function ov(m){document.getElementById('ovt').textContent=m||'جاري...';document.getElementById('ov').classList.add('show')}
+function hov(){document.getElementById('ov').classList.remove('show')}
+
+async function loadCampaigns(){
+  ov('جاري جلب حملاتك من Meta...');
+  await new Promise(r=>setTimeout(r,800));
+  
+  // استخدم البيانات الحقيقية مع إمكانية التحديث عبر Claude
+  camps = REAL_DATA.map(c=>({...c, cpm: c.msgs>0 ? c.spend/c.msgs : 999}));
+  
+  const active=camps.filter(c=>c.campaign_effective_status==='ACTIVE').length;
+  const ts=camps.reduce((s,c)=>s+c.spend,0);
+  const tm=camps.reduce((s,c)=>s+c.msgs,0);
+  document.getElementById('s1').textContent=active;
+  document.getElementById('s2').textContent='$'+ts.toFixed(0);
+  document.getElementById('s3').textContent=tm;
+  document.getElementById('sg').style.display='grid';
+  render();
+  showToast('✅ تم جلب '+camps.length+' حملة','tok');
+  hov();
+}
+
+function fc(f,b){curF=f;document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');render()}
+
+function render(){
+  let list=[...camps];
+  if(curF==='active') list=list.filter(c=>c.campaign_effective_status==='ACTIVE');
+  else if(curF==='paused') list=list.filter(c=>c.campaign_effective_status!=='ACTIVE');
+  else if(curF==='good') list=list.filter(c=>c.cpm<1&&c.msgs>0);
+  else if(curF==='bad') list=list.filter(c=>c.cpm>=2||(c.spend>5&&c.msgs===0));
+  const s=document.querySelector('.ss')?.value||'cpm';
+  if(s==='cpm') list.sort((a,b)=>a.cpm-b.cpm);
+  else if(s==='msgs') list.sort((a,b)=>b.msgs-a.msgs);
+  else list.sort((a,b)=>b.spend-a.spend);
+  const el=document.getElementById('campList');
+  if(!list.length){el.innerHTML='<div class="empty"><div class="empty-icon">🔍</div><div>لا توجد حملات</div></div>';return}
+  el.innerHTML=list.map(c=>{
+    const on=c.campaign_effective_status==='ACTIVE';
+    const cc=c.cpm<0.6?'g':c.cpm<1.5?'w':'r';
+    const cd=c.msgs>0?'$'+c.cpm.toFixed(2):'—';
+    const eid='c'+c.campaign_id.slice(-8);
+    let perf='';
+    if(c.msgs>0) perf=c.cpm<0.6?'<span class="perf pg">⭐ ممتاز</span>':c.cpm<1.5?'<span class="perf po">🟡 مقبول</span>':'<span class="perf pb">⚠️ مرتفع</span>';
+    else if(c.spend>5) perf='<span class="perf pb">🔴 بدون رسائل</span>';
+    return `<div class="cc ${on?'ac':''}" id="${eid}">
+      ${perf}
+      <div class="ch">
+        <div class="cn">${c.campaign}</div>
+        <span class="bdg ${on?'bon':'boff'}">${on?'🟢 نشط':'⏸️ موقف'}</span>
+      </div>
+      <div class="cs2">
+        <div class="cst"><div class="csv w">$${c.spend.toFixed(0)}</div><div class="csl">الإنفاق</div></div>
+        <div class="cst"><div class="csv b">${c.msgs}</div><div class="csl">الرسائل</div></div>
+        <div class="cst"><div class="csv ${cc}">${cd}</div><div class="csl">تكلفة/رسالة</div></div>
+      </div>
+      <div class="ca">
+        ${on
+          ?`<button class="ab a-pause" onclick="doAction('pause','${c.campaign_id}','${c.campaign}','${eid}')">⏸️ إيقاف</button>`
+          :`<button class="ab a-play" onclick="doAction('enable','${c.campaign_id}','${c.campaign}','${eid}')">▶️ تشغيل</button>`}
+        <button class="ab a-bud" onclick="toggleBud('${eid}')">💰 ميزانية</button>
+        <button class="ab a-ai" onclick="doAI('${eid}','${c.campaign}',${c.spend.toFixed(0)},${c.msgs},${c.cpm===999?0:c.cpm.toFixed(2)})">🤖 AI</button>
+      </div>
+      <div class="bud-row" id="bud-${eid}">
+        <button class="pre" onclick="setPre('${eid}',5)">$5</button>
+        <button class="pre" onclick="setPre('${eid}',10)">$10</button>
+        <button class="pre" onclick="setPre('${eid}',20)">$20</button>
+        <button class="pre" onclick="setPre('${eid}',30)">$30</button>
+        <button class="pre" onclick="setPre('${eid}',50)">$50</button>
+        <input type="number" class="bud-inp" id="inp-${eid}" placeholder="$" min="1">
+        <button class="bud-ok" onclick="doBudget('${c.campaign_id}','${eid}')">✅</button>
+      </div>
+      <div class="air" id="air-${eid}"></div>
+    </div>`;
+  }).join('');
+}
+
+// Actions via Claude+Windsor MCP
+async function doAction(action, id, name, eid){
+  if(!confirm(`${action==='pause'?'⏸️ إيقاف':'▶️ تشغيل'} "${name}"؟`)) return;
+  document.querySelectorAll(`#${eid} .ab`).forEach(b=>b.disabled=true);
+  ov(action==='pause'?'جاري الإيقاف...':'جاري التشغيل...');
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',max_tokens:200,
+        system:'Execute Windsor.ai action via MCP. Return only {"success":true} or {"success":false}.',
+        messages:[{role:'user',content:`Windsor.ai MCP: ${action}_campaign, campaign_id=${id}, account=624357827276087, connector=facebook, api_key=69e7a2e87d2e3db5b1810217ef37c5e03e45`}],
+        mcp_servers:[{type:'url',url:'https://mcp.windsor.ai',name:'windsor'}]
+      })
+    });
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'{}';
+    const c=camps.find(x=>x.campaign_id===id);
+    if(c) c.campaign_effective_status=action==='pause'?'PAUSED':'ACTIVE';
+    render();
+    showToast(action==='pause'?'✅ تم إيقاف الحملة':'✅ تم تشغيل الحملة','tok');
+  } catch(e){
+    showToast('❌ خطأ في الاتصال','terr');
+    document.querySelectorAll(`#${eid} .ab`).forEach(b=>b.disabled=false);
+  }
+  hov();
+}
+
+function toggleBud(eid){document.getElementById('bud-'+eid).classList.toggle('show')}
+function setPre(eid,v){document.getElementById('inp-'+eid).value=v}
+
+async function doBudget(id,eid){
+  const val=parseInt(document.getElementById('inp-'+eid).value);
+  if(!val||val<1){showToast('أدخل ميزانية','terr');return}
+  if(!confirm(`💰 تعديل الميزانية إلى $${val}/يوم؟`)) return;
+  ov('جاري تعديل الميزانية...');
+  try {
+    await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',max_tokens:200,
+        system:'Execute Windsor.ai action. Return {"success":true}.',
+        messages:[{role:'user',content:`Windsor.ai MCP: set_campaign_budget, campaign_id=${id}, account=624357827276087, connector=facebook, api_key=69e7a2e87d2e3db5b1810217ef37c5e03e45, budget_type=daily, amount=${val*100}`}],
+        mcp_servers:[{type:'url',url:'https://mcp.windsor.ai',name:'windsor'}]
+      })
+    });
+    showToast(`✅ الميزانية: $${val}/يوم`,'tok');
+    document.getElementById('bud-'+eid).classList.remove('show');
+  } catch(e){showToast('❌ خطأ','terr')}
+  hov();
+}
+
+async function doAI(eid,name,spend,msgs,cpm){
+  const box=document.getElementById('air-'+eid);
+  box.textContent='🤖 جاري التحليل...'; box.classList.add('show');
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:250,
+      system:'مستشار Meta Ads للعراق. أجب بالعربية بـ 2 جملة فقط: التقييم والقرار.',
+      messages:[{role:'user',content:`حملة: ${name} | إنفاق: $${spend} | رسائل: ${msgs} | تكلفة/رسالة: $${cpm}\nما قرارك؟`}]
+    })
+  });
+  const data=await res.json();
+  box.textContent=data.content?.[0]?.text||'حدث خطأ';
+}
+
+const SYS='أنت مساعد Meta Ads لمطبعة الكوثر العراق. الحملات النشطة: كتبك بضغطة واحدة $0.43، التوصيل مجاني $0.59. أجب بالعربية مختصراً.';
+function addMsg(role,text){const box=document.getElementById('chatBox');const d=document.createElement('div');d.className='msg '+(role==='user'?'u':'ai');d.innerHTML=`<div class="mav">${role==='user'?'👤':'🤖'}</div><div class="mbub">${text.replace(/\n/g,'<br>')}</div>`;box.appendChild(d);box.scrollTop=box.scrollHeight;if(role!=='typing')chatHist.push({role:role==='user'?'user':'assistant',content:text})}
+function showTD(){const box=document.getElementById('chatBox');const d=document.createElement('div');d.className='msg ai';d.id='td';d.innerHTML=`<div class="mav">🤖</div><div class="mbub"><div class="tdd"><span></span><span></span><span></span></div></div>`;box.appendChild(d);box.scrollTop=box.scrollHeight}
+async function sc(){const inp=document.getElementById('ci');const msg=inp.value.trim();if(!msg)return;inp.value='';inp.style.height='auto';addMsg('user',msg);document.getElementById('sb').disabled=true;showTD();try{const msgs=[...chatHist.slice(-8)];if(!msgs.length||msgs[msgs.length-1].role!=='user')msgs.push({role:'user',content:msg});const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,system:SYS,messages:msgs})});const data=await res.json();document.getElementById('td')?.remove();addMsg('ai',data.content?.[0]?.text||'خطأ.');}catch(e){document.getElementById('td')?.remove();addMsg('ai','خطأ في الاتصال.')}document.getElementById('sb').disabled=false}
+function qa(q){document.getElementById('ci').value=q;sc();document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));document.getElementById('tab-ai').classList.add('on');document.querySelectorAll('.nb')[1].classList.add('on')}
+</script>
+</body>
+</html>

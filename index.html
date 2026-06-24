@@ -5,24 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>مطبعة الكوثر — حجز الكتب المدرسية</title>
 
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1653563575875028');
-fbq('track', 'PageView');
-</script>
-<noscript>
-<img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1653563575875028&ev=PageView&noscript=1"/>
-</noscript>
-<!-- End Meta Pixel Code -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -614,7 +596,6 @@ function goToPage2() {
   }
   document.getElementById('alert1').classList.remove('show');
   // Pixel event
-  fbq('track', 'InitiateCheckout');
   goPage(2);
 }
 
@@ -675,7 +656,6 @@ function goToPage3() {
   document.getElementById('rv-landmark').textContent = landmark;
 
   // Pixel event
-  fbq('track', 'Lead', { currency: 'IQD', value: totalPrice });
 
   goPage(3);
 }
@@ -703,7 +683,6 @@ function sendWhatsApp() {
   msg += '\n🚚 التوصيل مجاني — الدفع عند الاستلام';
 
   // Pixel purchase event
-  fbq('track', 'Purchase', { currency: 'IQD', value: total });
 
   const waNum = '9647708170195';
   window.open(`https://wa.me/${waNum}?text=${encodeURIComponent(msg)}`, '_blank');
